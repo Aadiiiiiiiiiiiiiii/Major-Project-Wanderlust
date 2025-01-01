@@ -32,7 +32,7 @@ main().then((res) => {
 })
 
 async function main() {
-    await mongoose.connect(MONGO_URL);     //MONGO_URL //dbUrl
+    await mongoose.connect(MONGO_URL);     //MONGO_URL //dbUrl//dbUrl for mongoAtlas & MONGO_URL for local mongodb
 };
 
 app.set("view engine", "ejs");
