@@ -32,7 +32,11 @@ main().then((res) => {
 })
 
 async function main() {
-    await mongoose.connect(dbUrl);     //MONGO_URL //dbUrl//dbUrl for mongoAtlas & MONGO_URL for local mongodb
+    await mongoose.connect(dbUrl, {
+    tls: true,
+    tlsAllowInvalidCertificates: true // Only for troubleshooting!
+});
+     //MONGO_URL //dbUrl//dbUrl for mongoAtlas & MONGO_URL for local mongodb
 };
 
 app.set("view engine", "ejs");
@@ -50,7 +54,7 @@ const store = MongoStore.create({
     touchAfter: 24 * 3600,
 });
 
-store.on("error", () => {
+store.on("error", (err) => {
     console.log("ERROR in Mongo Session Store", err);
 });
 
