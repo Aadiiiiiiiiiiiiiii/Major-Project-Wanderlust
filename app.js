@@ -22,7 +22,7 @@ const reviewsRouter = require("./routes/review.js");
 const userRouter = require("./routes/user.js");
 
 // const MONGO_URL = "mongodb://127.0.0.1:27017/wanderlust";
-const MONGO_URL = process.env.ATLASDB_URL;
+const dbUrl = process.env.ATLASDB_URL;
 
 main().then((res) => {
     console.log("Connected to DB");
@@ -32,7 +32,11 @@ main().then((res) => {
 })
 
 async function main() {
-    await mongoose.connect(dbUrl);     //MONGO_URL //dbUrl//dbUrl for mongoAtlas & MONGO_URL for local mongodb
+    await mongoose.connect(dbUrl, {
+        tls: true,
+        tlsAllowInvalidCertificates: true // Only for troubleshooting!
+    });
+    //MONGO_URL //dbUrl//dbUrl for mongoAtlas & MONGO_URL for local mongodb
 };
 
 app.set("view engine", "ejs");
@@ -43,7 +47,7 @@ app.engine("ejs", ejsMate);
 app.use(express.static(path.join(__dirname, "/public")));
 
 const store = MongoStore.create({
-    mongoUrl: MONGO_URL,           //MONGO_URL //dbUrl
+    mongoUrl: dbUrl,           //MONGO_URL //dbUrl
     crypto: {
         secret: process.env.SECRET,
     },
